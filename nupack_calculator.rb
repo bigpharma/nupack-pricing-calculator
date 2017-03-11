@@ -5,7 +5,9 @@ class NupackCalculator
     fail ArgumentError, 'Invalid base price' if !base_price.is_a?(Numeric) || base_price < 1
 
     flat_fee = 1.05
-    return base_price * flat_fee
+    worker_fee = number_of_workers * 1.012
+    total_fee = (base_price * (flat_fee + worker_fee))
+    return total_fee.round(2)
   end
 end
 

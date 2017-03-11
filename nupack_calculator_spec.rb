@@ -20,19 +20,52 @@ describe NupackCalculator do
   end
 
   describe 'when the base price' do
-    describe 'is valid' do
-      describe 'and there are no workers' do
-        describe 'and there is no markup by type of package' do
-          it 'there is a 5% increase in cost' do
-            base_price = 10
-            expected_price = base_price * 1.05
-            assert_equal expected_price, @calculator.calculate_markup(base_price, 0, 'Books')
+    describe 'is a valid input' do
+      describe 'the workers' do
+        describe 'are a valid input' do
+          describe 'there is one worker' do
+            describe 'and there is no markup by type of package' do
+              it 'there is a 6.2% increase in cost' do
+                base_price = 10.0
+                expected_price = (base_price * 1.05) + (base_price * 1.012)
+                assert_equal expected_price, @calculator.calculate_markup(base_price, 1, 'Books')
+              end
+            end
+          end
+        end
+
+        describe 'are an invalid input' do
+          describe 'number of workers is 0' do
+            it 'an ArgumentError is returned' do
+              err = assert_raises ArgumentError do
+                @calculator.calculate_markup(1, 0, 'food')
+              end
+              assert_equal 'Invalid number of workers', err.message
+            end
+          end
+
+          describe 'number of workers is less than 0' do
+            it 'an ArgumentError is returned' do
+              err = assert_raises ArgumentError do
+                @calculator.calculate_markup(1, -1, 'food')
+              end
+              assert_equal 'Invalid number of workers', err.message
+            end
+          end
+
+          describe 'number of workers is not a number' do
+            it 'an ArgumentError is returned' do
+              err = assert_raises ArgumentError do
+                @calculator.calculate_markup(1, '1', 'food')
+              end
+              assert_equal 'Invalid number of workers', err.message
+            end
           end
         end
       end
     end
 
-    describe 'is invalid' do
+    describe 'is an invalid input' do
       describe 'base price is 0' do
         it 'an ArgumentError is returned' do
           err = assert_raises ArgumentError do
