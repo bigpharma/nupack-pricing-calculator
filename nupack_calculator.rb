@@ -3,6 +3,7 @@ require 'pry'
 class NupackCalculator
   def calculate_markup(base_price, number_of_workers, package_type)
     fail ArgumentError, 'Invalid base price' if !base_price.is_a?(Numeric) || base_price < 1
+    fail ArgumentError, 'Invalid number of workers' if !number_of_workers.is_a?(Numeric) || number_of_workers < 1
 
     flat_fee = 1.05
     worker_fee = number_of_workers * 1.012
