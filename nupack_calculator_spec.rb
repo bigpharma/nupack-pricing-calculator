@@ -27,8 +27,18 @@ describe NupackCalculator do
             describe 'and there is no markup by type of package' do
               it 'there is a 6.2% increase in cost' do
                 base_price = 10.0
-                expected_price = (base_price * 1.05) + (base_price * 1.012)
+                expected_price = (base_price * 1.05 * 1.012).round(2)
                 assert_equal expected_price, @calculator.calculate_markup(base_price, 1, 'Books')
+              end
+            end
+          end
+
+          describe 'there are four workers' do
+            describe 'and there is no markup by type of package' do
+              it 'there is a 9.8% increase in cost' do
+                base_price = 12456.95
+                expected_price = 13707.63
+                assert_equal expected_price, @calculator.calculate_markup(base_price, 4, 'Books')
               end
             end
           end

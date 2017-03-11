@@ -6,8 +6,10 @@ class NupackCalculator
     fail ArgumentError, 'Invalid number of workers' if !number_of_workers.is_a?(Numeric) || number_of_workers < 1
 
     flat_fee = 1.05
-    worker_fee = number_of_workers * 1.012
-    total_fee = (base_price * (flat_fee + worker_fee))
+    base_price_with_flat_markup = base_price * flat_fee
+
+    worker_fee = number_of_workers * 0.012
+    total_fee = (base_price_with_flat_markup + base_price_with_flat_markup * worker_fee)
     return total_fee.round(2)
   end
 end
