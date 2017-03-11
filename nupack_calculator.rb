@@ -1,18 +1,13 @@
-# require 'minitest/autorun'
-#
-# class NupackCalculatorTest < Minitest::Test
-#   def test_nupack_calculator_returns_an_answer
-#     calc = NupackCalculator.new
-#     assert calc.calculate_markup(0, 3, 1) != nil
-#   end
-# end
+require 'pry'
 
 class NupackCalculator
   def calculate_markup(base_price, number_of_workers, package_type)
-    return true
+    fail ArgumentError, 'Invalid base price' if !base_price.is_a?(Numeric) || base_price < 1
+
+    flat_fee = 1.05
+    return base_price * flat_fee
   end
 end
-
 
 #NuPack is responsible for taking existing products and repackaging them for sale at electronic stores like Best Buy.
 # Companies will phone up NuPack, explain the process and NuPack needs to quickly give them an estimate of how much it will cost. Different markups to the job:
