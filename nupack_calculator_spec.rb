@@ -3,17 +3,6 @@ require "minitest/spec"
 require_relative "nupack_calculator"
 require 'pry'
 
-#Input: $1,299.99, 3 people, food
-#Output: $1,591.58
-#Example 2:
-#----------
-#Input: $5,432.00, 1 person, drugs
-#Output: $6,199.81
-#Example 3:
-#----------
-#Input: $12,456.95, 4 people, books
-#Output: $13,707.63
-
 describe NupackCalculator do
   before do
     @calculator = NupackCalculator.new
@@ -50,6 +39,10 @@ describe NupackCalculator do
                   material_markup = base_price_with_flat_markup * 0.075
                   expected_price = (base_price_with_flat_markup + material_markup + worker_markup).round(2)
                   assert_equal expected_price, @calculator.calculate_markup(base_price, 1, 'drugs')
+
+                  # Testing the same thing, could be in another 'it' block
+                  expected_price = 6199.81
+                  assert_equal expected_price, @calculator.calculate_markup(5432.00, 1, 'drugs')
                 end
               end
             end
@@ -61,6 +54,15 @@ describe NupackCalculator do
                 base_price = 12456.95
                 expected_price = 13707.63
                 assert_equal expected_price, @calculator.calculate_markup(base_price, 4, 'Books')
+              end
+            end
+          end
+
+          describe 'there are three workers' do
+            describe 'there is markup by type of package' do
+              it 'calculates the markup correctly' do
+                expected_price = 1591.58
+                assert_equal expected_price, @calculator.calculate_markup(1299.99, 3, 'food')
               end
             end
           end
