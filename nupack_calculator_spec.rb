@@ -21,14 +21,36 @@ describe NupackCalculator do
 
   describe 'when the base price' do
     describe 'is a valid input' do
-      describe 'the workers' do
-        describe 'are a valid input' do
+      describe 'the worker count' do
+        describe 'is a valid input' do
           describe 'there is one worker' do
             describe 'and there is no markup by type of package' do
               it 'there is a 6.2% increase in cost' do
                 base_price = 10.0
                 expected_price = (base_price * 1.05 * 1.012).round(2)
                 assert_equal expected_price, @calculator.calculate_markup(base_price, 1, 'Books')
+              end
+            end
+
+            describe 'and there is markup by the type of package' do
+              let(:base_price) { 10 }
+              let(:base_price_with_flat_markup) { base_price * 1.05 }
+              let(:worker_markup) { base_price_with_flat_markup * 0.012 }
+
+              describe 'the type of package is Food' do
+                it 'there is a 13% markup' do
+                  material_markup = base_price_with_flat_markup * 0.13
+                  expected_price = (base_price_with_flat_markup + material_markup + worker_markup).round(2)
+                  assert_equal expected_price, @calculator.calculate_markup(base_price, 1, 'food')
+                end
+              end
+
+              describe 'the type of package is pharmaceuticals' do
+                it 'there is a 7.5% markup' do
+                  material_markup = base_price_with_flat_markup * 0.075
+                  expected_price = (base_price_with_flat_markup + material_markup + worker_markup).round(2)
+                  assert_equal expected_price, @calculator.calculate_markup(base_price, 1, 'drugs')
+                end
               end
             end
           end
@@ -44,7 +66,7 @@ describe NupackCalculator do
           end
         end
 
-        describe 'are an invalid input' do
+        describe 'is an invalid input' do
           describe 'number of workers is 0' do
             it 'an ArgumentError is returned' do
               err = assert_raises ArgumentError do
